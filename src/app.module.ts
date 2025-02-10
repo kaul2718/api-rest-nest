@@ -14,6 +14,7 @@ import { EquipoModule } from './equipo/equipo.module';
 import { ServiciosModule } from './servicios/servicios.module';
 import { DetalleServiciosModule } from './detalle-servicios/detalle-servicios.module';
 import { ConfigModule } from '@nestjs/config';
+import { rejects } from 'assert';
 
 @Module({
   imports: [
@@ -31,6 +32,15 @@ import { ConfigModule } from '@nestjs/config';
       database: process.env.DB_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: process.env.DB_SSL === 'true',
+      extra: {
+        ssl:
+        process.env.DB_SSL === 'true'
+        ? {
+          rejectUnauthorized: false,
+        }
+        :null,
+      },
     }),
     AuthModule,
     OrdersModule,
